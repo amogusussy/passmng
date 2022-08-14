@@ -10,12 +10,20 @@ from pathlib import Path
 import pyperclip
 from zxcvbn import zxcvbn
 
+fallback_length = 20
+
 try:
     prompt = input("Do you want to make a new password? (y/n) ")
 
     x = 0
     if prompt.lower() == "y":
-        length = int(input("How many characters do you want your password to have? "))
+        try:
+            length = int(
+                input("How many characters do you want your password to have? ")
+            )
+        except ValueError:
+            print(f"Not a number was provided, using {fallback_length} characters")
+            length = fallback_length
         numbers = input("Do you want numbers? (y/n) ")
         letters = input("Do you want letters? (y/n) ")
         characters = input("Do you want special characters? (y/n) ")
@@ -32,7 +40,10 @@ try:
         if input("Copy this password? (y/n) ").lower() == "y":
             pyperclip.copy(passwd)
 
-    if "passwd" not in locals() or input("Do you want to save this? (y/n) ").lower() == "y":
+    if (
+        "passwd" not in locals()
+        or input("Do you want to save this? (y/n) ").lower() == "y"
+    ):
         location = f"{Path.home()}/.pass.txt"
         print(location)
         if not exists(location):
@@ -55,7 +66,7 @@ try:
         print(
             f"Your password has been given an entropy score of {results['score']}, where 1 is bad, and 4 is great."
         )
-except (KeyboardInterrupt, EOFError): # Ctrl+C, Ctrl+D
+except (KeyboardInterrupt, EOFError):  # Ctrl+C, Ctrl+D
     print("\nAborted by user")
     exit(1)
 except PermissionError:
