@@ -58,3 +58,5 @@ try:
 except (KeyboardInterrupt, EOFError): # Ctrl+C, Ctrl+D
     print("\nAborted by user")
     exit(1)
+except PermissionError:
+    print(f"Failed to write to the {location}, Permission Denied!")
