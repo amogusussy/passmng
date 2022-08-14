@@ -10,47 +10,51 @@ from pathlib import Path
 import pyperclip
 from zxcvbn import zxcvbn
 
-prompt = input("Do you want to make a new password? (y/n) ")
+try:
+    prompt = input("Do you want to make a new password? (y/n) ")
 
-x = 0
-if prompt.lower() == "y":
-    length = int(input("How many characters do you want your password to have? "))
-    numbers = input("Do you want numbers? (y/n) ")
-    letters = input("Do you want letters? (y/n) ")
-    characters = input("Do you want special characters? (y/n) ")
-    totalChoice = str()
-    if numbers.lower() == "y":
-        totalChoice += s.digits
-    if letters.lower() == "y":
-        totalChoice += s.ascii_letters
-    if characters.lower() == "y":
-        totalChoice += s.punctuation
-    x = 1
-    passwd = "".join(secrets.choice(totalChoice) for i in range(length))
-    print(passwd)
-    if input("Copy this password? (y/n) ").lower() == "y":
-        pyperclip.copy(passwd)
+    x = 0
+    if prompt.lower() == "y":
+        length = int(input("How many characters do you want your password to have? "))
+        numbers = input("Do you want numbers? (y/n) ")
+        letters = input("Do you want letters? (y/n) ")
+        characters = input("Do you want special characters? (y/n) ")
+        totalChoice = str()
+        if numbers.lower() == "y":
+            totalChoice += s.digits
+        if letters.lower() == "y":
+            totalChoice += s.ascii_letters
+        if characters.lower() == "y":
+            totalChoice += s.punctuation
+        x = 1
+        passwd = "".join(secrets.choice(totalChoice) for i in range(length))
+        print(passwd)
+        if input("Copy this password? (y/n) ").lower() == "y":
+            pyperclip.copy(passwd)
 
-if "passwd" not in locals() or input("Do you want to save this? (y/n) ").lower() == "y":
-    location = f"{Path.home()}/.pass.txt"
-    print(location)
-    if not exists(location):
-        os.mknod(location)
-        os.chmod(location, 0o222)
-    site = str(input("What site/application is this for? "))
-    userName = str(input("What is your user name for said site/application? "))
-    if x == 0:
-        passwd = getpass.getpass("What is your password? ")
-    results = zxcvbn(passwd, user_inputs=[userName, site])
-    print(
-        f"Your password has been given an entropy score of {results['score']}, where 1 is bad, and 4 is great."
-    )
-    with open(location, mode="a") as file:
-        file.write("Name: " + site + "\n")
-        file.write("Username: " + userName + "\n")
-        file.write("Password: " + str(passwd) + "\n\n")
-else:
-    results = zxcvbn(passwd, user_inputs=[userName, site])
-    print(
-        f"Your password has been given an entropy score of {results['score']}, where 1 is bad, and 4 is great."
-    )
+    if "passwd" not in locals() or input("Do you want to save this? (y/n) ").lower() == "y":
+        location = f"{Path.home()}/.pass.txt"
+        print(location)
+        if not exists(location):
+            os.mknod(location)
+            os.chmod(location, 0o222)
+        site = str(input("What site/application is this for? "))
+        userName = str(input("What is your user name for said site/application? "))
+        if x == 0:
+            passwd = getpass.getpass("What is your password? ")
+        results = zxcvbn(passwd, user_inputs=[userName, site])
+        print(
+            f"Your password has been given an entropy score of {results['score']}, where 1 is bad, and 4 is great."
+        )
+        with open(location, mode="a") as file:
+            file.write("Name: " + site + "\n")
+            file.write("Username: " + userName + "\n")
+            file.write("Password: " + str(passwd) + "\n\n")
+    else:
+        results = zxcvbn(passwd, user_inputs=[userName, site])
+        print(
+            f"Your password has been given an entropy score of {results['score']}, where 1 is bad, and 4 is great."
+        )
+except (KeyboardInterrupt, EOFError): # Ctrl+C, Ctrl+D
+    print("\nAborted by user")
+    exit(1)
