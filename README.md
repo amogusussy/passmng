@@ -1,5 +1,7 @@
 # Install
-As root, run this command in the command line
+As root, run the following commands:
+
+    pip install pyperclip zxcvbn
 
     wget -O /usr/bin/passmng https://raw.githubusercontent.com/amogusussy/passmng/main/passmng && chmod +x /usr/bin/passmng
 
