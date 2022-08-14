@@ -48,7 +48,7 @@ try:
         print(location)
         if not exists(location):
             os.mknod(location)
-            os.chmod(location, 0o222)
+            os.chmod(location, 0o200)
         site = str(input("What site/application is this for? "))
         userName = str(input("What is your user name for said site/application? "))
         if x == 0:
