@@ -8,14 +8,14 @@ prompt = input("Do you want to make a new password? (y/n) ")
 
 x=0
 if prompt.lower() == "y":
-    length = int(input("How many charecters do you want your password to have? "))
+    length = int(input("How many characters do you want your password to have? "))
     numbers = input("Do you want numbers? (y/n) ")
     letters = input("Do you want letters? (y/n) ")
-    charecters = input("Do you want charecters? (y/n) ")
+    characters = input("Do you want special characters? (y/n) ")
     totalChoice = str()
     if numbers.lower() == "y": totalChoice += s.digits
     if letters.lower() == "y": totalChoice += s.ascii_letters
-    if charecters.lower() == "y": totalChoice += s.punctuation
+    if characters.lower() == "y": totalChoice += s.punctuation
     x=1
     passwd = ''.join(secrets.choice(totalChoice) for i in range(length))
     print(passwd)
